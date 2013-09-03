@@ -1,0 +1,23 @@
+/**
+ * Responsive mixin
+ **/
+@mixin breakpoint($point) {
+	@if $point == desktop {
+		@media (min-width: 979px) { @content; }
+	}
+	@else if $point == mobile-portrait {
+		@media (max-width: 440px) { @content; }
+	}
+	@else if $point == mobile {
+		@media (max-width: 767px) { @content; }
+	}
+	@else if $point == tablet {
+		@media (min-width: 768px) and (max-width: 979px) { @content; }
+	}
+	@else if ($point == tablet-and-desktop) {
+		@media (min-width: 768px) { @content; }
+	}
+	@else if ($point == tablet-and-mobile) {
+		@media (max-width:979px) { @content; }
+	}
+}

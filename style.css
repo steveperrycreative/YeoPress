@@ -1,7 +1,10 @@
 /*
-Theme Name: 
-Theme URI: 
-Description: An awesome WordPress base template
-Author: 
+Theme Name:     $theme
+Theme URI:
+Description:    An awesome WordPress base template
+Author:         Steve Perry
+Author URI:     steveperrycreative.com
 Version: 0.1
 */
+
+@import "css/global.css";
