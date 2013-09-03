@@ -1,3 +1,5 @@
+# Based on the YeoPress Default Theme but tailored to my unique requirements and workflow.
+
 # YeoPress Default Theme
 
 This base theme is packed full of goodies to get your WordPress development process off the ground.  Not only does it come with a decent amount of WP Theme files, it also gets you setup with a `Gruntfile` with some goodies like LiveReload, Sass compilation and RequireJS support.
