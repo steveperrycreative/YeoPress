@@ -1,4 +1,4 @@
-# Based on the YeoPress Default Theme but tailored to my unique requirements and workflow.
+Based on the YeoPress Default Theme but tailored to my unique requirements and workflow.
 
 # YeoPress Default Theme
 
