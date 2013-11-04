@@ -28,7 +28,7 @@ module.exports = function(grunt) {
 
 		// JsHint your javascript
 		jshint : {
-			all : ['js/*.js', '!js/modernizr.js', '!js/*.min.js', '!js/vendor/**/*.js'],
+			all : ['js/*.js', '!js/*.min.js', '!js/vendor/**/*.js'],
 			options : {
 				browser: true,
 				curly: false,
@@ -57,6 +57,7 @@ module.exports = function(grunt) {
 					}
 				],
 				options : {
+                    compass : true,
 					style : 'compressed'
 				}
 			},
@@ -71,15 +72,9 @@ module.exports = function(grunt) {
 					}
 				],
 				options : {
+                    compass : true,
 					style : 'expanded'
 				}
-			}
-		},
-
-		// Bower task sets up require config
-		bower : {
-			all : {
-				rjsConfig : 'js/global.js'
 			}
 		},
 
@@ -87,10 +82,15 @@ module.exports = function(grunt) {
 		requirejs : {
 			production : {
 				options : {
-					name : 'global',
-					baseUrl : 'js',
-					mainConfigFile : 'js/global.js',
+                    almond : true,
+                    wrap : true,
+                    name : 'main',
+                    baseUrl : 'js',
+                    paths: {
+                        '$name': 'path/to/$name'
+                    },
 					out : 'js/optimized.min.js'
+
 				}
 			}
 		},
@@ -131,30 +131,13 @@ module.exports = function(grunt) {
 	// Build task
 	grunt.registerTask('build', ['jshint', 'sass:production', 'imagemin:production', 'svgmin:production', 'requirejs:production']);
 
-	// Template Setup Task
-	grunt.registerTask('setup', ['sass:dev', 'bower-install'])
-
 	// Load up tasks
 	grunt.loadNpmTasks('grunt-contrib-sass');
 	grunt.loadNpmTasks('grunt-contrib-jshint');
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-bower-requirejs');
-	grunt.loadNpmTasks('grunt-contrib-requirejs');
+	grunt.loadNpmTasks('grunt-requirejs');
 	grunt.loadNpmTasks('grunt-contrib-imagemin');
 	grunt.loadNpmTasks('grunt-svgmin');
-
-	// Run bower install
-	grunt.registerTask('bower-install', function() {
-		var done = this.async();
-		var bower = require('bower').commands;
-		bower.install().on('end', function(data) {
-			done();
-		}).on('data', function(data) {
-			console.log(data);
-		}).on('error', function(err) {
-			console.error(err);
-			done();
-		});
-	});
 
 };
