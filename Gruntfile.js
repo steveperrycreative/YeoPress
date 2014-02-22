@@ -2,29 +2,31 @@ module.exports = function(grunt) {
 
 	grunt.initConfig({
 
-		// Watches for changes and runs tasks
-		watch : {
-			sass : {
-				files : ['scss/**/*.scss'],
-				tasks : ['sass:dev'],
-				options : {
-					livereload : true
-				}
-			},
-			js : {
-				files : ['js/**/*.js'],
-				tasks : ['jshint'],
-				options : {
-					livereload : true
-				}
-			},
-			php : {
-				files : ['**/*.php'],
-				options : {
-					livereload : true
-				}
-			}
-		},
+        // Watches for changes and runs tasks
+        watch : {
+            sass : {
+                cwd : 'scss',
+                files : ['*.scss', '**/*.scss'],
+                tasks : ['sass:dev'],
+                options : {
+                    compass : true,
+                    livereload : true
+                }
+            },
+            js : {
+                files : ['js/**/*.js'],
+                tasks : ['jshint'],
+                options : {
+                    livereload : true
+                }
+            },
+            php : {
+                files : ['**/*.php'],
+                options : {
+                    livereload : true
+                }
+            }
+        },
 
 		// JsHint your javascript
 		jshint : {
@@ -44,37 +46,44 @@ module.exports = function(grunt) {
 			}
 		},
 
-		// Dev and production build for sass
-		sass : {
-			production : {
-				files : [
-					{
-						src : ['**/*.scss', '!**/_*.scss'],
-						cwd : 'scss',
-						dest : 'css',
-						ext : '.css',
-						expand : true
-					}
-				],
-				options : {
+        // Dev and production build for sass
+        sass : {
+            production : {
+                files : [
+                    {
+                        src : ['*.scss', '!**/_*.scss'],
+                        cwd : 'scss',
+                        dest : 'css',
+                        ext : '.css',
+                        expand : true
+                    }
+                ],
+                options : {
                     compass : true,
-					style : 'compressed'
-				}
-			},
-			dev : {
-				files : [
-					{
-						src : ['**/*.scss', '!**/_*.scss'],
-						cwd : 'scss',
-						dest : 'css',
-						ext : '.css',
-						expand : true
-					}
-				],
-				options : {
+                    style : 'compressed'
+                }
+            },
+            dev : {
+                files : [
+                    {
+                        src : ['*.scss', '!**/_*.scss'],
+                        cwd : 'scss',
+                        dest : 'css',
+                        ext : '.css',
+                        expand : true
+                    }
+                ],
+                options : {
                     compass : true,
-					style : 'expanded'
-				}
+                    style : 'expanded'
+                }
+            }
+        },
+
+		// Bower task sets up require config
+		bower : {
+			all : {
+				rjsConfig : 'js/global.js'
 			}
 		},
 
@@ -84,13 +93,10 @@ module.exports = function(grunt) {
 				options : {
                     almond : true,
                     wrap : true,
-                    name : 'main',
-                    baseUrl : 'js',
-                    paths: {
-                        '$name': 'path/to/$name'
-                    },
-					out : 'js/optimized.min.js'
-
+					name : 'global',
+					baseUrl : 'js',
+					mainConfigFile : 'js/global.js',
+					out : 'js/optimised.min.js'
 				}
 			}
 		},
@@ -131,6 +137,9 @@ module.exports = function(grunt) {
 	// Build task
 	grunt.registerTask('build', ['jshint', 'sass:production', 'imagemin:production', 'svgmin:production', 'requirejs:production']);
 
+	// Template Setup Task
+	grunt.registerTask('setup', ['sass:dev', 'bower-install'])
+
 	// Load up tasks
 	grunt.loadNpmTasks('grunt-contrib-sass');
 	grunt.loadNpmTasks('grunt-contrib-jshint');
@@ -140,4 +149,17 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-imagemin');
 	grunt.loadNpmTasks('grunt-svgmin');
 
+	// Run bower install
+	grunt.registerTask('bower-install', function() {
+		var done = this.async();
+		var bower = require('bower').commands;
+		bower.install().on('end', function(data) {
+			done();
+		}).on('data', function(data) {
+			console.log(data);
+		}).on('error', function(err) {
+			console.error(err);
+			done();
+		});
+	});
 };
