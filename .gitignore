@@ -1,4 +1,9 @@
+.yeopress
 .sass-cache
-node_modules
 .DS_Store
 .idea/
+node_modules
+uploads
+wp-config.php
+global.js
+#wp-content/themes/$theme/js/vendor/
